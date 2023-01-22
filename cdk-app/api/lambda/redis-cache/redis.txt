@@ -1,0 +1,29 @@
+const Redis = require("ioredis");
+
+if (typeof client === 'undefined') {
+    var client = new Redis({
+            port: 6379,
+            host: "test-Endpoint",
+            tls: {},
+    });;
+}
+exports.handler = async (event) => {
+    try{
+        await client.set("colour", "black");
+        let result = await client.get("colour");
+        let response = {
+                    'statusCode': 200,
+                    'body': JSON.stringify({
+                                result: result,
+                                })
+                }
+        return response;
+    }
+    catch{
+        console.error('Unable to connect to redis');
+        return {
+            'statusCode': 400
+        }
+    }
+    
+};
